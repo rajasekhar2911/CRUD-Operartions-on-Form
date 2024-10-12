@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login Form With delete</title>
+	<style>
+		.body{
+			background-image:url("https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_640.png");
+			background-size:cover;
+			background-attachment:fixed;
+		}
+		.formTable{
+			display:flex;
+			justify-content:center;
+		}
+		form{
+			border:2px solid black;
+			height:30vh;
+			width:25vw;
+		}
+		.table{
+			display:flex;
+			justify-content:center;	
+		}
+		.paddiv{
+			padding-left:30px;
+			padding-top:15px;
+		}
+		input{
+			width:20rem;
+			height:1.5rem;
+		}
+		label{
+			color:black;
+			font-size:20px;
+		}
+		.tr{
+			Padding:7px;
+			background-color:#ffff99;
+		}
+	</style>
+</head>
+<body class="body">
+
+	<div>
+	
+		<div class="formTable">
+			<form id="form">
+				<div class="paddiv">
+					<label for="name">Name:</label><br>
+					<input type="text" id="name" name="name" required>
+				</div><br>
+				<div class="paddiv">
+					<label for="contact">Contact:</label><br>
+					<input type="number" id="contact" name="contact" required>
+				</div><br>
+				<span class="paddiv">
+					<button type="button" id="bts" onclick="addingValues()">Save</button>
+				</span>
+				<span class="paddiv">
+					<button type="button" id="btn" onclick="resetDetails()">Reset</button>
+				</span>
+			</form>
+		</div><br>
+		
+		<div class="table">
+			<table border=3px; style="border-collapse:collapse; border-color:black; width:25%; height:10%">
+				<thead>
+					<tr>
+						<th class="tr" style="width:10px;">SNo</th>
+						<th class="tr" style="width:150px;">Name</th>
+						<th class="tr" style="width:130px;">Contact</th>
+						<th class="tr">Changes</th>
+						<th class="tr">Remove</th>
+					</tr>
+				</thead>
+				<tbody id="tbContent">
+					
+				</tbody>
+			</table>
+		</div>
+	
+	</div>
+
+<script>
+
+	let arr = [];
+	let count = 0;
+	let val = -1;
+	
+	let nameDet = document.getElementById("name");
+	let contactDet = document.getElementById("contact"); 
+	let buttonDet= document.getElementById("bts");
+	let tcontent = document.getElementById("tbContent");
+	
+	function addingValues(){
+		
+		let obj = {
+			name:nameDet.value,
+			contact:contactDet.value,
+		}
+		
+		if(val < 0){
+			obj.index = arr.length + 1;
+			arr.push(obj);
+		}
+		else{
+			arr[val]=obj;
+		}
+		
+		formDetails();
+		
+	}
+	
+	
+	function formDetails() {
+		
+		var tcont="";	
+	
+		arr.forEach((objVal,index) => {	
+		count = index+1;	
+		tcont += `<tr>
+					<td>${count}</td>
+					<td>${objVal.name}</td>
+					<td>${objVal.contact}</td>
+					<td><button type="button" onclick="editingValues(${index})">Edit</button></td>
+					<td><button type="button" onclick="deleteValues(${index})">Delete</button></td>
+				</tr>` 
+		});
+						
+			tcontent.innerHTML = tcont;
+		
+			tcontent.style.color="black";
+			tcontent.style.backgroundColor="#ffffe6";
+			tcontent.style.textAlign="center";
+			
+	}
+	
+	console.log(arr);
+	
+	function resetDetails(){
+	
+		let formDet = document.getElementById("form");
+		formDet.reset();
+		val = -1;
+	}
+	
+	function editingValues(index){
+	
+		let obj2 = arr[index];
+		        
+		nameDet.value = obj2.name;
+		contactDet.value = obj2.contact;
+		
+		val = index;
+		
+		addingValues();
+		
+	}
+	
+	function deleteValues(index) {
+	
+	    arr.splice(index, 1);
+	    
+	    formDetails();
+	}
+	
+</script>
+</body>
+</html>
